@@ -1,0 +1,95 @@
+# Alper Framework
+
+## Installation
+
+### Quick Start
+
+The installation process consists of three simple steps:
+
+```bash
+# Step 1: Create conda environment
+conda create -n Alper -c conda-forge python=3.12
+
+# Step 2: Activate the environment
+conda activate Alper
+
+# Step 3: Install dependencies
+pip install -r requirements.txt
+```
+
+### Requirements
+
+The project requires the following key dependencies:
+- `openai>=2.13.0` - For LLM API interactions
+- `sentence-transformers>=2.2.2` - For text encoding
+- `faiss-cpu>=1.12.0` - For approximate nearest neighbor search
+- `tiktoken>=0.12.0` - For token counting
+- `numpy>=1.26.0` - For numerical operations
+- `pandas>=2.2.0` - For data processing
+- `scikit-learn>=1.5.0` - For evaluation metrics
+
+**Note**: If you have GPU support and want to use FAISS GPU acceleration, replace `faiss-cpu` with `faiss-gpu` in `requirements.txt`.
+
+## Usage
+
+### Running Experiments
+
+Use the provided shell script to run experiments on multiple datasets:
+
+```bash
+bash run_table_experiments.sh
+```
+
+### Running Individual Experiments
+
+Run the main script with specific parameters:
+
+```bash
+python main.py --dataset <dataset_name> --budget <budget> --model gpt-5-mini [options]
+```
+
+### List Available Datasets
+
+```bash
+python main.py --list
+```
+
+### Command Line Options
+
+- `--dataset`: Dataset name (required)
+- `--budget`: Total budget in USD (default: 1000.0)
+- `--model`: LLM model name (default: gpt-5-mini)
+- `--k`: K-NN neighbors (default: 15)
+- `--top-m`: Top-M candidates (default: 5)
+- `--alpha`: Confidence in similarity (default: 0.8)
+- `--theta`: Label confidence threshold (default: 0.6)
+- `--xi-llm`: Expected LLM accuracy (default: 0.95)
+- `--L`: Global efficiency lower bound (default: 0.6)
+- `--U`: Global efficiency upper bound (default: 0.95)
+- `--cache-dir`: LLM cache directory (default: llm_cache)
+- `--output-dir`: Output directory (default: alper_results)
+- `--count-cache-cost`: Count cache hit cost
+- `--list`: List all available datasets
+
+## Project Structure
+
+```
+CEER/
+├── main.py                    # Main entry point
+├── alper_framework.py         # Core framework implementation
+├── llm_oracle.py              # LLM Oracle for querying
+├── data_loader.py             # Data loading utilities
+├── encoder_topk.py            # SentenceBERT encoding and ANN search
+├── metrics.py                 # Evaluation metrics
+├── run_table_experiments.sh   # Experiment runner script
+├── requirements.txt           # Python dependencies
+└── INSTALLATION.txt           # Detailed installation guide
+```
+
+## Output
+
+Results are saved in the `alper_results/` directory with the following format:
+- `{dataset_name}_alper_llm_{timestamp}.json` - Main results
+- `{dataset_name}_alper_{timestamp}_llm_logs.json` - Detailed LLM logs
+
+
